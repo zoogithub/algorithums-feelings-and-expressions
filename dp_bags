@@ -1,0 +1,58 @@
+#include <iostream>
+#include <stdio.h>
+using namespace std;
+int max1(int a,int b)
+{
+    if(a>=b) return a;
+    else return b;
+}
+int solve(int weight[],int money[],int n,int bag)
+{
+    int weighti,a[n+1][bag+1],j;
+    if(n==0)
+    {
+        return 0;
+    }
+    for(weighti=0;weighti<=bag;weighti++)//i表示背包容量,当前容量小于第一个大小，则不加
+    {
+        if(weighti>=weight[0])
+        {
+            a[0][weighti]=money[0];
+        }
+        else
+        {
+            a[0][weighti]=0;
+        }
+//        printf("%d %d \n",a[0][weighti],weighti);
+    }
+    for(int i=1;i<=n-1;i++)
+    {
+        for(j=0;j<=bag;j++)
+        {
+            if(j<weight[i])
+            {
+                a[i][j]=a[i-1][j];
+            }
+            else
+            {
+                a[i][j]=max1(a[i-1][j],a[i-1][j-weight[i]]+money[i]);
+            }
+        }
+    }
+    return a[n-1][bag];
+}
+int main()
+{
+    int bag,n,i,x;
+    scanf("%d",&bag);
+    scanf("%d",&n);
+    int weight[n],money[n];
+    for(i=0;i<=n-1;i++)
+    {
+        scanf("%d",&weight[i]);
+        scanf("%d",&money[i]);
+    }
+    x=solve(weight,money,n,bag);
+    printf("%d",x);
+    return 0;
+}
